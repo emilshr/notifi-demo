@@ -6,6 +6,7 @@ import { ProjectSectionWrapper } from "@/components/ProjectSectionWrapper";
 import { toast } from "react-toastify";
 import { Button, Input, Textarea } from "@nextui-org/react";
 import { SkeletonIndicator } from "../CustomSkeleton";
+import { DemoVersionAlert } from "@/common/DemoVersionAlert";
 
 type Props = {
   project: Project | undefined | null;
@@ -18,6 +19,8 @@ export const GeneralSettings = ({ project, loading }: Props) => {
     description: projectDescription = "",
     id = "",
   } = project || {};
+
+  const [open, setOpen] = useState(false);
 
   const [name, setName] = useState(projectName);
   const [description, setDescription] = useState(projectDescription);
@@ -75,14 +78,8 @@ export const GeneralSettings = ({ project, loading }: Props) => {
           <SkeletonIndicator isLoaded={loading}>
             <Button
               color="secondary"
-              disabled={
-                isLoading ||
-                (projectName === name && projectDescription === description) ||
-                !loading
-              }
-              isLoading={isLoading}
               onClick={() => {
-                mutate({ name, description, projectId: id });
+                setOpen(true);
               }}
             >
               Update
@@ -96,10 +93,11 @@ export const GeneralSettings = ({ project, loading }: Props) => {
       >
         <div className="flex justify-end">
           <SkeletonIndicator isLoaded={loading}>
-            <DeleteProject projectId={id} />
+            <DeleteProject />
           </SkeletonIndicator>
         </div>
       </ProjectSectionWrapper>
+      <DemoVersionAlert open={open} onClose={() => setOpen(false)} />
     </>
   );
 };

@@ -3,7 +3,7 @@ import {
   createTRPCRouter,
   offsetPaginatedPublicProcedure,
   paginatedPublicProcedure,
-  protectedProcedure,
+  publicProcedure,
 } from "../trpc";
 import {
   encryptData,
@@ -20,12 +20,8 @@ export const projectsRouter = createTRPCRouter({
    * @description Endpoint to get all projects for the requesting user. You can pass the last project id as a cursor to get paginated outputs
    */
   getProjects: paginatedPublicProcedure.query(
-    async ({ ctx: { prisma, session }, input: { cursor } }) => {
-      const {
-        user: { id },
-      } = session;
+    async ({ ctx: { prisma }, input: { cursor } }) => {
       const items = await prisma.project.findMany({
-        where: { userId: id },
         take: 11,
         skip: cursor ? 1 : undefined,
         cursor: cursor ? { id: cursor } : undefined,
@@ -44,21 +40,15 @@ export const projectsRouter = createTRPCRouter({
   /**
    * @description Endpoint to create a project. Every project will be associated with a user entity
    */
-  createProject: protectedProcedure
+  createProject: publicProcedure
     .input(z.object({ projectName: z.string(), description: z.string() }))
     .mutation(async ({ input, ctx }) => {
       const { projectName, description } = input;
-      const {
-        prisma,
-        session: {
-          user: { id: userId },
-        },
-      } = ctx;
+      const { prisma } = ctx;
       const createdProject = await prisma.project.create({
         data: {
           name: projectName,
           description,
-          userId,
           backgroundUrl: getRandomBackgroundUrl(),
         },
       });
@@ -79,7 +69,7 @@ export const projectsRouter = createTRPCRouter({
   /**
    *
    */
-  getProject: protectedProcedure
+  getProject: publicProcedure
     .input(z.object({ projectId: z.string() }))
     .query(async ({ ctx: { prisma }, input: { projectId } }) => {
       const foundProject = await prisma.project.findFirst({
@@ -87,7 +77,7 @@ export const projectsRouter = createTRPCRouter({
       });
       return foundProject;
     }),
-  updateProject: protectedProcedure
+  updateProject: publicProcedure
     .input(
       z.object({
         projectId: z.string(),
@@ -103,7 +93,7 @@ export const projectsRouter = createTRPCRouter({
         });
       },
     ),
-  deleteProject: protectedProcedure
+  deleteProject: publicProcedure
     .input(z.object({ projectId: z.string() }))
     .mutation(async ({ ctx: { prisma }, input: { projectId } }) => {
       return await prisma.project.delete({
@@ -115,7 +105,7 @@ export const projectsRouter = createTRPCRouter({
         },
       });
     }),
-  getSecretAndApiKeys: protectedProcedure
+  getSecretAndApiKeys: publicProcedure
     .input(z.object({ projectId: z.string() }))
     .query(async ({ ctx: { prisma }, input: { projectId } }) => {
       const foundData = await prisma.projectApiKeys.findMany({
@@ -165,7 +155,7 @@ export const projectsRouter = createTRPCRouter({
         message: "Requested project not found",
       });
     }),
-  createNewApiKey: protectedProcedure
+  createNewApiKey: publicProcedure
     .input(z.object({ projectId: z.string(), name: z.string() }))
     .mutation(async ({ ctx: { prisma }, input: { name, projectId } }) => {
       const foundProjectSecret = await prisma.projectSecrets.findFirst({
@@ -188,7 +178,7 @@ export const projectsRouter = createTRPCRouter({
         },
       });
     }),
-  createNewApiKeySecret: protectedProcedure
+  createNewApiKeySecret: publicProcedure
     .input(z.object({ projectId: z.string() }))
     .mutation(async ({ ctx: { prisma }, input: { projectId } }) => {
       const projectSecret = generateNewTokenSecret();
@@ -206,7 +196,7 @@ export const projectsRouter = createTRPCRouter({
         )}`,
       };
     }),
-  getProjectActivityPageCount: protectedProcedure
+  getProjectActivityPageCount: publicProcedure
     .input(z.object({ projectId: z.string() }))
     .query(async ({ ctx: { prisma }, input: { projectId } }) => {
       const count = await prisma.errorLogs.count({ where: { projectId } });
@@ -224,7 +214,7 @@ export const projectsRouter = createTRPCRouter({
         items,
       };
     }),
-  getProjectOverview: protectedProcedure
+  getProjectOverview: publicProcedure
     .input(z.object({ projectId: z.string() }))
     .query(async ({ ctx: { prisma }, input: { projectId } }) => {
       const [dailyReports, apiConsumption] = await prisma.$transaction([
@@ -238,17 +228,4 @@ export const projectsRouter = createTRPCRouter({
         apiConsumption,
       };
     }),
-  canUserCreateProjects: protectedProcedure.query(
-    async ({
-      ctx: {
-        prisma,
-        session: {
-          user: { id },
-        },
-      },
-    }) => {
-      const count = await prisma.project.count({ where: { userId: id } });
-      return count < PROJECT_COUNT_LIMIT;
-    },
-  ),
 });

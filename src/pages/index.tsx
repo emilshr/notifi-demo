@@ -1,19 +1,25 @@
 import { CommonPaddingWrapper } from "@/components/CommonPaddingWrapper";
 import { CreateNewProject } from "@/components/dashboard/CreateNewProjectDialog";
 import { ProjectListing } from "@/components/dashboard/ProjectListing";
-import type { NextPage } from "next";
+import Head from "next/head";
 
-const Dashboard: NextPage = () => {
+export default function Dashboard() {
   return (
-    <div className="flex h-full w-full flex-col gap-y-6">
-      <CommonPaddingWrapper>
-        <div className="flex h-full flex-col gap-y-4">
-          <CreateNewProject />
-          <ProjectListing />
-        </div>
-      </CommonPaddingWrapper>
-    </div>
-  );
-};
+    <>
+      <Head>
+        <title>Notifi</title>
+        <meta name="description" content="Notifi - Error reporting made easy" />
+        <link rel="icon" href="/favicon.ico" />
+      </Head>
 
-export default Dashboard;
+      <div className="flex h-full w-full flex-col gap-y-6">
+        <CommonPaddingWrapper>
+          <div className="flex h-full flex-col gap-y-4">
+            <CreateNewProject />
+            <ProjectListing />
+          </div>
+        </CommonPaddingWrapper>
+      </div>
+    </>
+  );
+}

@@ -6,6 +6,8 @@ import {
   ModalFooter,
   ModalHeader,
 } from "@nextui-org/react";
+import { useState } from "react";
+import { AlertBanner } from "../AlertBanner";
 
 interface Props {
   title: string;
@@ -25,6 +27,8 @@ const KeyRotationAlert = ({
   onClose,
   loading,
 }: Props) => {
+  const [openDemoAlert, setOpenDemoAlert] = useState(false);
+
   return (
     <Modal
       isOpen={open}
@@ -38,6 +42,10 @@ const KeyRotationAlert = ({
           <div className="flex flex-col gap-y-4 text-slate-600">
             {description}
           </div>
+          <AlertBanner
+            title="This is a demo version"
+            content="This functionality is limited as the app is intended for demo purposes"
+          />
         </ModalBody>
         <ModalFooter>
           <div className="flex w-full justify-end gap-x-2">
@@ -46,8 +54,8 @@ const KeyRotationAlert = ({
             </Button>
             <Button
               color="danger"
-              onClick={() => onConfirm().finally(() => onClose())}
-              isLoading={loading}
+              onClick={() => setOpenDemoAlert(true)}
+              disabled
             >
               Randomize Secret
             </Button>
