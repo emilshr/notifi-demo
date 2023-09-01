@@ -8,7 +8,7 @@
     "postinstall": "prisma generate",
     "lint": "next lint",
     "start": "next start",
-    "setup-db": "prisma generate && prisma db push",
+    "setup-db": "npx prisma generate && npx prisma db push",
     "type-check": "tsc",
     "test": "jest",
     "seed-db": "ts-node --compiler-options {\"module\":\"CommonJS\"} prisma/seed.ts"
