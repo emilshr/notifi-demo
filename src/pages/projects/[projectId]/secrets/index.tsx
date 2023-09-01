@@ -6,7 +6,7 @@ import { ApiKeyList } from "@/components/project-dashboard/ApiKeyList";
 import { CreateNewApiKey } from "@/components/project-dashboard/CreateNewApiKey";
 import { SecretConfiguration } from "@/components/project-dashboard/SecretConfiguration";
 import { api } from "@/utils/api";
-import { Skeleton, Snippet } from "@nextui-org/react";
+import { Snippet } from "@nextui-org/react";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
 

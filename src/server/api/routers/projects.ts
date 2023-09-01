@@ -13,7 +13,6 @@ import { TRPCError } from "@trpc/server";
 import { getRandomBackgroundUrl } from "@/common/background-generator";
 
 const API_TEMPLATE = "NOTIFI-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx";
-const PROJECT_COUNT_LIMIT = 3;
 
 export const projectsRouter = createTRPCRouter({
   /**

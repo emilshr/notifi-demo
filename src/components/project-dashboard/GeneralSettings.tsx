@@ -1,9 +1,7 @@
 import { useEffect, useState } from "react";
-import { api } from "@/utils/api";
 import type { Project } from "@prisma/client";
 import { DeleteProject } from "./DeleteProject";
 import { ProjectSectionWrapper } from "@/components/ProjectSectionWrapper";
-import { toast } from "react-toastify";
 import { Button, Input, Textarea } from "@nextui-org/react";
 import { SkeletonIndicator } from "../CustomSkeleton";
 import { DemoVersionAlert } from "@/common/DemoVersionAlert";
@@ -14,11 +12,8 @@ type Props = {
 };
 
 export const GeneralSettings = ({ project, loading }: Props) => {
-  const {
-    name: projectName = "",
-    description: projectDescription = "",
-    id = "",
-  } = project || {};
+  const { name: projectName = "", description: projectDescription = "" } =
+    project || {};
 
   const [open, setOpen] = useState(false);
 
@@ -32,16 +27,6 @@ export const GeneralSettings = ({ project, loading }: Props) => {
   useEffect(() => {
     setDescription(projectDescription);
   }, [projectDescription]);
-
-  console.log({ project, name, description });
-
-  const { isLoading, mutate } = api.projects.updateProject.useMutation({
-    onSuccess({ name: fetchedName, description: fetchedDescription }) {
-      setName(fetchedName);
-      setDescription(fetchedDescription);
-      toast.success("Updated project details", { toastId: "project_update" });
-    },
-  });
 
   return (
     <>

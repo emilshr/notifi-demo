@@ -9,9 +9,8 @@ const config = {
   extends: [
     "plugin:@typescript-eslint/recommended-type-checked",
     "plugin:@typescript-eslint/stylistic-type-checked",
-    "custom"
   ],
-  ignorePatterns: ["**/*.js"],
+  ignorePatterns: ["**/*.js", "**/*.mjs"],
   rules: {
     "@typescript-eslint/consistent-type-imports": [
       "warn",

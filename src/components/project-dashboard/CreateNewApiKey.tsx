@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { Button } from "@nextui-org/react";
-import dynamic from "next/dynamic";
 import { DemoVersionAlert } from "@/common/DemoVersionAlert";
 
 export const CreateNewApiKey = () => {

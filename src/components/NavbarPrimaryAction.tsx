@@ -1,13 +1,11 @@
 import { UpgradeIcon } from "@/svg-icons/upgrade-icon";
 import {
   Avatar,
-  Button,
   Dropdown,
   DropdownItem,
   DropdownMenu,
   DropdownSection,
   DropdownTrigger,
-  Spinner,
 } from "@nextui-org/react";
 import router from "next/router";
 
