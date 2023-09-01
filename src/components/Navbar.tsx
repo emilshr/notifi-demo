@@ -19,7 +19,7 @@ export const CustomNavbar = () => {
           </Link>
           <Tooltip showArrow content="Notifi beta is available now!">
             <Chip
-              color="success"
+              color="warning"
               variant="dot"
               size="sm"
               radius="sm"
@@ -27,7 +27,7 @@ export const CustomNavbar = () => {
                 content: "font-bold text-xs",
               }}
             >
-              beta
+              Demo
             </Chip>
           </Tooltip>
         </div>
